@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col-md-6 offset-md-3">
+<h2>Homestuck Land Generator</h2>
+<form action="" method="POST">
+    {% csrf_token %}
+    <br>
+    <select class="form-select" name="classes" id="classes">
+        {% if selected_class %}
+        <option value="{{ selected_class.id }}" selected>{{ selected_class.name }}</option>
+        {% else %}
+        <option value="" disabled selected>Pick your class</option>
+        {% endif %}
+
+        {% for my_class in my_classes %}
+        <option value="{{ my_class.id }}">{{ my_class.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <select class="form-select" name="aspects" id="aspects">
+        {% if selected_aspect %}
+        <option value="{{ selected_aspect.id }}" selected>{{ selected_aspect.name }}</option>
+        {% else %}
+        <option value="" disabled selected>Pick your aspect</option>
+        {% endif %}
+        
+        {% for aspect in aspects %}
+        <option value="{{ aspect.id }}">{{ aspect.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% if class_elements and aspect_elements %}
+    <br>
+    <h6>As a <b>{{ selected_class }} </b>of <b>{{ selected_aspect }}</b>, your assigned planet is...</h6>
+
+    <h5><em>The Land of <b>{{ class_elements.0 }}</b> and <b>{{ aspect_elements.0 }}</b>.</em></h5>
+    <h5><em>The Land of <b>{{ class_elements.1 }}</b> and <b>{{ aspect_elements.1 }}</b>.</em></h5>
+    <h5><em>The Land of <b>{{ class_elements.2 }}</b> and <b>{{ aspect_elements.2 }}</b>.</em></h5>
+<br><br>
+    <b>Extra classes: </b>
+    {% for class_element in class_elements %}
+        {% if not forloop.first %}
+            {{ class_element }},
+        {% endif %}
+    {% endfor %}
+    <br>
+    <b>Extra aspects: </b>
+    {% for aspect_element in aspect_elements %}
+        {% if not forloop.first %}
+            {{ aspect_element }},
+        {% endif %}
+    {% endfor %}
+
+{% endif %}
+</div>
+
+{% endblock %}
